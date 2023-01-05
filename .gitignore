@@ -1,0 +1,8 @@
+# ide/system
+*.pyc
+__pycache
+.idea
+.DS_Store
+*.ipynb_checkpoints
+*.pdf
+*.xlsx
