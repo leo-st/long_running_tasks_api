@@ -2,8 +2,8 @@ import os
 from datetime import datetime, timedelta, timezone
 
 from flask import Flask
-from flask_jwt_extended import JWTManager, set_access_cookies, create_access_token, get_jwt, get_jwt_identity
-from flask_cors import CORS
+#from flask_jwt_extended import JWTManager, set_access_cookies, create_access_token, get_jwt, get_jwt_identity
+#from flask_cors import CORS
 
 from controllers.calculation_controller import calculation_controller
 
@@ -18,5 +18,5 @@ app.config.from_object(os.getenv("CONFIG_CLASS", "utils.config.Config"))
 
 app.register_blueprint(calculation_controller)
 
-if __name__ == "__main__":
-    app.run(port=5005)
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
