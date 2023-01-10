@@ -10,8 +10,20 @@ CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND', 'redis://localho
 
 celery = Celery('tasks', broker=CELERY_BROKER_URL, backend=CELERY_RESULT_BACKEND)
 
+kwargs = {'CELERY_TRACK_STARTED': True}
+
+celery.conf.update(**kwargs)
+
 @celery.task(name='tasks.extraction')
 def extraction():
     start_time = time.time()
     time.sleep(20)
     return "The time required to extract information: " + str(time.time() - start_time) + " seconds"
+
+@celery.task(name='tasks.long_calc')
+def long_calculation():
+    for i in range(1,10000):
+        i=i+1
+        v=i%2
+        c=i+v
+    return c

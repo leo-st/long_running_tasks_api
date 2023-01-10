@@ -14,9 +14,15 @@ def greetings():
 
     return response
 
-@calculation_controller.route('/extraction/')
+@calculation_controller.route('/extraction')
 def extraction() -> str:
     task = celery.send_task('tasks.extraction', kwargs={})
+    response = f"task_id : {task.id}"
+    return response
+
+@calculation_controller.route('/long_calc')
+def long_calc() -> str:
+    task = celery.send_task('tasks.long_calc', kwargs={})
     response = f"task_id : {task.id}"
     return response
 
@@ -25,7 +31,9 @@ def check_task() -> str:
     req = request.json
     task_id = req.get('task_id')
     res = celery.AsyncResult(task_id)
-    if res.state == states.PENDING:
+    if res.state == states.STARTED:
         return res.state
+    if res.state == states.PENDING:
+        return 'this should not happen: PENDING - only if you ask for un existing process'
     else:
         return str(res.result)
