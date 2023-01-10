@@ -8,6 +8,7 @@ CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND', 'redis://localho
 
 celery = Celery('tasks', broker=CELERY_BROKER_URL, backend=CELERY_RESULT_BACKEND)
 
-kwargs = {'CELERY_TRACK_STARTED': True}
+# kwargs = {'CELERY_TRACK_STARTED': True,
+# 'CELERY_TASK_RESULT_EXPIRES': 3600}
 
-celery.conf.update(**kwargs)
+# celery.conf.update(**kwargs)
