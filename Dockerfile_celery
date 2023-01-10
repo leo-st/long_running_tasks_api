@@ -6,16 +6,10 @@ ENV C_FORCE_ROOT true
 
 RUN mkdir /queue_app
 
-RUN echo $(pwd)
-
-
 COPY ./app /queue_app/app
 COPY ./celery_queue /queue_app/celery_queue
 
 WORKDIR /queue_app/celery_queue
-
-RUN echo $(ls /queue_app)
-
 
 RUN pip install -U setuptools pip
 RUN pip install -r /queue_app/celery_queue/requirements.txt

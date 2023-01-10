@@ -24,8 +24,10 @@ def extraction() -> str:
 def long_calc() -> str:
     task = celery.send_task('tasks.long_calc', kwargs={})
     response = f"task_id : {task.id}"
+    #TODO: write task_id into postgrsql and task started
     return response
 
+# TODO: reshape this only for checking of status, maybe create additional check point to initialy ask if process exists
 @calculation_controller.route('/check', methods=["POST"])
 def check_task() -> str:
     req = request.json
@@ -37,3 +39,5 @@ def check_task() -> str:
         return 'this should not happen: PENDING - only if you ask for un existing process'
     else:
         return str(res.result)
+
+#TODO: endpoint which will retrive real data and will work only if status=SUCCESS and exists in postgresql
