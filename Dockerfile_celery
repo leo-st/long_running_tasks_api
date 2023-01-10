@@ -1,0 +1,21 @@
+FROM python:3.9-alpine
+
+ENV CELERY_BROKER_URL redis://redis:6379/0
+ENV CELERY_RESULT_BACKEND redis://redis:6379/0
+ENV C_FORCE_ROOT true
+
+RUN mkdir /queue_app
+
+RUN echo $(pwd)
+
+
+COPY ./app /queue_app/app
+COPY ./celery_queue /queue_app/celery_queue
+
+WORKDIR /queue_app/celery_queue
+
+RUN echo $(ls /queue_app)
+
+
+RUN pip install -U setuptools pip
+RUN pip install -r /queue_app/celery_queue/requirements.txt
