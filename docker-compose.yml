@@ -4,23 +4,22 @@ services:
     build:
       context: ./app
       dockerfile: Dockerfile
+    command: gunicorn --bind 0.0.0.0:5000 app:app --workers=4 --capture-output --log-level debug --access-logfile '-' --error-logfile '-'
     restart: always
     ports:
      - "5000:5000"
+    links:
+      - redis
     depends_on:
       - redis
-    volumes: ['./app:/app']
   worker:
     build:
-      context: .
-      dockerfile: Dockerfile_celery
-    command: celery -A tasks worker -l info -E
-    environment:
-      CELERY_BROKER_URL: redis://redis
-      CELERY_RESULT_BACKEND: redis://redis
+      context: ./app
+    hostname: tasks
+    entrypoint: celery
+    command: -A celery_app.celery worker -l info -E
     depends_on:
       - redis
-    volumes: ['./celery-queue:/queue']
   redis:
     image: redis:alpine
     ports:

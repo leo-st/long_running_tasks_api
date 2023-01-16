@@ -1,6 +1,6 @@
 from http import HTTPStatus
 from flask import Blueprint, request, make_response
-from worker import celery
+from celery_app import celery
 import celery.states as states
 
 
@@ -18,13 +18,6 @@ def greetings():
 def extraction() -> str:
     task = celery.send_task('tasks.extraction', kwargs={})
     response = f"task_id : {task.id}"
-    return response
-
-@calculation_controller.route('/long_calc')
-def long_calc() -> str:
-    task = celery.send_task('tasks.long_calc', kwargs={})
-    response = f"task_id : {task.id}"
-    #TODO: write task_id into postgrsql and task started
     return response
 
 # TODO: reshape this only for checking of status, maybe create additional check point to initialy ask if process exists
